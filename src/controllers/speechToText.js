@@ -38,6 +38,7 @@ const speechToText = async (req, res) => {
     logger('info', '[STT] request successfull');
     logger('info', '[STT] Transcription:', transcription);
   } catch (err) {
+    logger('error', err);
     res.status(500).json({
       status: 'INTERNAL_SERVER_ERROR',
       statusCode: 500,
