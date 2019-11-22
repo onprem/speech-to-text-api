@@ -1,0 +1,39 @@
+{
+  "name": "speech-to-text-api",
+  "version": "0.1.0",
+  "description": "API service to convert speech to text",
+  "main": "src/index.js",
+  "repository": "https://github.com/prmsrswt/speech-to-text-api.git",
+  "author": "Prem Kumar <prmsrswt@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "eslint --fix \"**/*.js\"",
+    "lint:ci": "yarn eslint \"**/*.js\""
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.4.3",
+    "prettier": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
