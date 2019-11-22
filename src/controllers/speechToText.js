@@ -3,7 +3,15 @@ const fs = require('fs');
 
 const logger = require('../utils/logger');
 
+const languageMap = new Map([
+  ['default', 'hi-IN'],
+  ['english', 'en-IN'],
+  ['hindi', 'hi-IN'],
+  ['english-us', 'en-US'],
+]);
+
 const speechToText = async (req, res) => {
+  logger('info', '[STT] got request... lang: ', req.body.lang);
   const sttClient = new speech.SpeechClient();
 
   const file = fs.readFileSync(req.file.path);
@@ -11,10 +19,14 @@ const speechToText = async (req, res) => {
   const audio = {
     content: file.toString('base64'),
   };
+
+  let languageCode;
+  if (req.body.lang) languageCode = languageMap.get(req.body.lang);
+
   const config = {
     encoding: req.file.mimetype === 'audio/mpeg' ? 'MP3' : 'LINEAR16',
     sampleRateHertz: 16000,
-    languageCode: 'en-US',
+    languageCode: languageCode || languageMap.get('default'),
   };
   const request = {
     audio,
@@ -26,7 +38,6 @@ const speechToText = async (req, res) => {
     const transcription = response.results
       .map(result => result.alternatives[0].transcript)
       .join('\n');
-    logger('info', response);
 
     res.status(200).json({
       status: 'REQUEST_SUCCESSFULL',
